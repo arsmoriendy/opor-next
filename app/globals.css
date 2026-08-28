@@ -133,6 +133,7 @@
 
 .dark {
   --background: var(--dark0Hard);
+  --card: var(--dark0);
   --foreground: var(--light0);
   --muted: var(--dark0Soft);
   --muted-foreground: var(--light4);
