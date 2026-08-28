@@ -153,4 +153,11 @@
   html {
     @apply font-mono;
   }
+  a {
+    @apply text-primary;
+
+    &:hover {
+      @apply underline;
+    }
+  }
 }
