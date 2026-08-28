@@ -41,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       )}
       suppressHydrationWarning
     >
-      <body>
+      <body className="flex flex-col items-center justify-between lg:pt-6">
         <ThemeProvider attribute="class">{children}</ThemeProvider>
       </body>
     </html>
