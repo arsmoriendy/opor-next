@@ -71,7 +71,10 @@ const SocialBtn = ({
         render={
           <a
             href={link}
-            className={buttonVariants({ variant: "outline", size: "icon" })}
+            className={cn(
+              "text-inherit",
+              buttonVariants({ variant: "outline", size: "icon" })
+            )}
           >
             {children}
           </a>
