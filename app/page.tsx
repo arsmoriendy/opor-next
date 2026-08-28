@@ -15,7 +15,7 @@ export default function Home() {
         <CardHeader className="flex flex-row justify-between">
           <div>
             <CardTitle className="font-heading text-3xl text-accent">
-              Phantom Ports
+              Opor
             </CardTitle>
             <p className="font-heading">Lookup unregistered ports</p>
           </div>

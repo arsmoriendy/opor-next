@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "opor",
+      "name": "opor-next",
       "dependencies": {
         "@base-ui/react": "^1.7.0",
         "@phosphor-icons/react": "^2.1.10",
