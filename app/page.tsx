@@ -1,4 +1,5 @@
 import { Footer } from "@/components/footer"
+import { PortForm } from "@/components/port-form"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
@@ -18,7 +19,9 @@ export default function Home() {
         <ThemeSwitcher />
       </CardHeader>
 
-      <CardContent className="flex-1"></CardContent>
+      <CardContent className="flex-1">
+        <PortForm />
+      </CardContent>
 
       <Footer />
     </Card>
