@@ -1,4 +1,17 @@
+import { Button, buttonVariants } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
+import {
+  ArrowUpIcon,
+  CoffeeIcon,
+  GithubLogoIcon,
+} from "@phosphor-icons/react/dist/ssr"
 import { forwardRef, HTMLAttributes, ReactNode } from "react"
 
 type FooterProps = HTMLAttributes<HTMLDivElement>
@@ -14,19 +27,19 @@ export const Footer = forwardRef<HTMLDivElement, FooterProps>(
         <div className="w-full p-6 lg:w-[768px]">
           <div id="socialbar" className="flex space-x-1.5">
             <SocialBtn link="#" tooltip="Back to top">
-              <ArrowUp className="h-4 w-4" />
+              <ArrowUpIcon />
             </SocialBtn>
             <SocialBtn
-              link="https://github.com/arsmoriendy/phantomports-front"
+              link="https://github.com/arsmoriendy/opor-next"
               tooltip="Star on Github"
             >
-              <GithubLogo className="h-4 w-4" />
+              <GithubLogoIcon />
             </SocialBtn>
             <SocialBtn
               link="https://ko-fi.com/arsmoriendy"
               tooltip="Buy me a coffee"
             >
-              <Coffee className="h-4 w-4" />
+              <CoffeeIcon />
             </SocialBtn>
           </div>
 
@@ -54,18 +67,16 @@ const SocialBtn = ({
 }) => (
   <TooltipProvider>
     <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          asChild
-          variant={"outline"}
-          size={"sm"}
-          className="h-auto p-1.5"
-        >
-          <a href={link} className="text-inherit">
+      <TooltipTrigger
+        render={
+          <a
+            href={link}
+            className={buttonVariants({ variant: "outline", size: "icon" })}
+          >
             {children}
           </a>
-        </Button>
-      </TooltipTrigger>
+        }
+      ></TooltipTrigger>
       <TooltipContent>
         <p>{tooltip}</p>
       </TooltipContent>
