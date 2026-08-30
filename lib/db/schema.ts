@@ -26,7 +26,8 @@ export const servicesTable = pgTable("services", {
 export const portsTable = pgTable(
   "ports",
   {
-    port: integer().primaryKey(),
+    id: uuid().primaryKey().$defaultFn(v7),
+    port: integer().notNull(),
     serviceId: uuid("service_id").notNull(),
   },
   (table) => [
