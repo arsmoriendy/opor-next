@@ -8,26 +8,26 @@ import {
 } from "drizzle-orm/pg-core"
 import { v7 } from "uuid"
 
-export const servicesTable = pgTable("service", {
+export const servicesTable = pgTable("services", {
   id: uuid().primaryKey().$defaultFn(v7),
-  serviceName: varchar(),
-  transportProtocol: varchar(),
+  serviceName: varchar("service_name"),
+  transportProtocol: varchar("transport_protocol"),
   description: varchar(),
   assignee: varchar(),
   contact: varchar(),
-  registrationDate: timestamp({ withTimezone: true }),
-  modificationDate: timestamp({ withTimezone: true }),
+  registrationDate: timestamp("registration_date", { withTimezone: true }),
+  modificationDate: timestamp("modification_date", { withTimezone: true }),
   reference: varchar(),
-  serviceCode: varchar(),
-  unauthorizedUseReported: varchar(),
-  assignmentNotes: varchar(),
+  serviceCode: varchar("service_code"),
+  unauthorizedUseReported: varchar("unauthorized_use_reported"),
+  assignmentNotes: varchar("assignment_notes"),
 })
 
 export const portsTable = pgTable(
-  "port",
+  "ports",
   {
     port: integer().primaryKey(),
-    serviceId: uuid().notNull(),
+    serviceId: uuid("service_id").notNull(),
   },
   (table) => [
     foreignKey({
