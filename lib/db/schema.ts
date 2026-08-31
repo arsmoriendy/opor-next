@@ -24,8 +24,8 @@ export const servicesTable = pgTable("services", {
   assignmentNotes: varchar("assignment_notes"),
 })
 
-export const portsTable = pgTable(
-  "ports",
+export const registeredPortsTable = pgTable(
+  "registered_ports",
   {
     id: uuid().primaryKey().$defaultFn(v7),
     port: integer().notNull(),
@@ -42,3 +42,7 @@ export const portsTable = pgTable(
     index().on(table.serviceId),
   ]
 )
+
+export const unregisteredPortsTable = pgTable("unregistered_ports", {
+  port: integer().primaryKey(),
+})
