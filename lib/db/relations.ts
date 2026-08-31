@@ -10,5 +10,11 @@ export const relations = defineRelations(
         to: r.servicesTable.id,
       }),
     },
+    servicesTable: {
+      ports: r.many.portsTable({
+        from: r.servicesTable.id,
+        to: r.portsTable.serviceId,
+      }),
+    },
   })
 )
