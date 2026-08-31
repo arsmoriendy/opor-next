@@ -1,4 +1,5 @@
 import {
+  index,
   pgTable,
   varchar,
   timestamp,
@@ -37,5 +38,7 @@ export const portsTable = pgTable(
     })
       .onUpdate("cascade")
       .onDelete("cascade"),
+    index().on(table.port),
+    index().on(table.serviceId),
   ]
 )
