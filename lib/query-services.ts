@@ -2,10 +2,7 @@
 
 import { db } from "@/lib/db"
 
-export async function queryServices(
-  portNumber: number,
-  protocols: string[] | undefined
-) {
+export async function queryServices(portNumber: number, protocols?: string[]) {
   const services = await db.query.servicesTable.findMany({
     where: {
       ports: { port: portNumber },
