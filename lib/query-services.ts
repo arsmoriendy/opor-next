@@ -18,9 +18,11 @@ export async function queryServices(
   if (services.length !== 0) {
     const nextUnassignedPort = await findAdjacentUnassignedPort({
       gt: portNumber,
+      protocols,
     })
     const prevUnassignedPort = await findAdjacentUnassignedPort({
       lt: portNumber,
+      protocols,
     })
 
     return {
