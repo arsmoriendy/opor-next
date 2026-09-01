@@ -27,7 +27,7 @@ export default async function Home({
     >
       <CardHeader className="flex flex-row justify-between">
         <div>
-          <CardTitle>
+          <CardTitle className="-mt-3">
             <span
               className="font-display text-5xl"
               style={{ fontVariationSettings: '"MORF" 45, "SHLN" 30' }}
