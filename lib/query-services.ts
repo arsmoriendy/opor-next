@@ -2,12 +2,16 @@
 
 import { db } from "@/lib/db"
 
-export async function queryPort(portNumber: number) {
-  const service = (
-    await db.query.portsTable.findFirst({
+export async function queryServices(
+  portNumber: number,
+  protocols: string[] | undefined
+) {
+  const services = (
+    await db.query.portsTable.findMany({
       where: { port: portNumber },
       with: {
         service: {
+          where: { transportProtocol: { in: protocols } },
           with: {
             ports: { columns: { port: true }, orderBy: { port: "asc" } },
           },
@@ -15,7 +19,7 @@ export async function queryPort(portNumber: number) {
       },
       columns: { serviceId: false, port: false, id: false },
     })
-  )?.service
+  ).map((row) => row.service)
 
-  return service
+  return services
 }

@@ -6,7 +6,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { queryPort } from "@/lib/query-port"
+import { queryServices } from "@/lib/query-services"
 import { REGEXP_ONLY_DIGITS } from "input-otp"
 import { forwardRef, HTMLAttributes, useEffect, useRef, useState } from "react"
 
@@ -50,7 +50,7 @@ export const PortForm = forwardRef<
 
         const portNumber = parseInt(portStr)
 
-        const port = await queryPort(portNumber)
+        const port = await queryServices(portNumber)
         console.log(port)
 
         setPortNum(portNumber)
