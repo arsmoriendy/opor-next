@@ -37,7 +37,7 @@ export const SearchForm = forwardRef<
           <div>
             <label htmlFor="port">Port Number</label>
             <label
-              className="block text-sm text-muted-foreground"
+              className="block text-xs text-muted-foreground"
               htmlFor="port"
             >
               Press enter to search
