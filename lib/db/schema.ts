@@ -1,6 +1,6 @@
 import {
   index,
-  pgTable,
+  snakeCase,
   varchar,
   timestamp,
   integer,
@@ -9,25 +9,25 @@ import {
 } from "drizzle-orm/pg-core"
 import { v7 } from "uuid"
 
-export const protocosTable = pgTable("protocols", {
+export const protocosTable = snakeCase.table("protocols", {
   name: varchar().primaryKey(),
 })
 
-export const servicesTable = pgTable(
+export const servicesTable = snakeCase.table(
   "services",
   {
     id: uuid().primaryKey().$defaultFn(v7),
-    serviceName: varchar("service_name"),
-    transportProtocol: varchar("transport_protocol"),
+    serviceName: varchar(),
+    transportProtocol: varchar(),
     description: varchar(),
     assignee: varchar(),
     contact: varchar(),
-    registrationDate: timestamp("registration_date", { withTimezone: true }),
-    modificationDate: timestamp("modification_date", { withTimezone: true }),
+    registrationDate: timestamp({ withTimezone: true }),
+    modificationDate: timestamp({ withTimezone: true }),
     reference: varchar(),
-    serviceCode: varchar("service_code"),
-    unauthorizedUseReported: varchar("unauthorized_use_reported"),
-    assignmentNotes: varchar("assignment_notes"),
+    serviceCode: varchar(),
+    unauthorizedUseReported: varchar(),
+    assignmentNotes: varchar(),
   },
   (table) => [
     foreignKey({
@@ -41,12 +41,12 @@ export const servicesTable = pgTable(
   ]
 )
 
-export const portsTable = pgTable(
+export const portsTable = snakeCase.table(
   "ports",
   {
     id: uuid().primaryKey().$defaultFn(v7),
     port: integer().notNull(),
-    serviceId: uuid("service_id").notNull(),
+    serviceId: uuid().notNull(),
   },
   (table) => [
     foreignKey({
