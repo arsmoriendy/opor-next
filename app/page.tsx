@@ -14,7 +14,7 @@ export default function Home() {
           <CardTitle className="font-heading text-3xl text-accent">
             Opor
           </CardTitle>
-          <p className="font-heading">Lookup unregistered ports</p>
+          <p className="font-heading">Lookup unassigned ports</p>
         </div>
         <ThemeSwitcher />
       </CardHeader>
