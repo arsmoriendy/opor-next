@@ -27,10 +27,18 @@ export default async function Home({
     >
       <CardHeader className="flex flex-row justify-between">
         <div>
-          <CardTitle className="font-heading text-3xl text-accent">
-            Opor
+          <CardTitle>
+            <span
+              className="font-heading text-3xl font-semibold tracking-tight
+                text-accent"
+            >
+              opor
+            </span>
+            <span className="font-mono text-muted-foreground">(.top)</span>
           </CardTitle>
-          <p className="font-heading">Lookup unassigned ports</p>
+          <p className="-mt-1 font-heading text-base text-muted-foreground">
+            Lookup unassigned (<i>open</i>) ports
+          </p>
         </div>
         <ThemeSwitcher />
       </CardHeader>
