@@ -1,12 +1,16 @@
 import type { Metadata } from "next"
-import { JetBrains_Mono, Arima } from "next/font/google"
+import { JetBrains_Mono, Arima, Honk } from "next/font/google"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 import { ThemeProvider } from "next-themes"
 
-const arimaHeading = Arima({ subsets: ["latin"], variable: "--font-heading" })
-
-const jetbrainsMono = JetBrains_Mono({
+const headingFont = Arima({ subsets: ["latin"], variable: "--font-heading" })
+const displayFont = Honk({
+  subsets: ["latin"],
+  variable: "--font-display",
+  axes: ["MORF", "SHLN"],
+})
+const monoFont = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
 })
@@ -23,8 +27,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={cn(
         "h-full",
         "antialiased",
-        jetbrainsMono.variable,
-        arimaHeading.variable
+        monoFont.variable,
+        headingFont.variable,
+        displayFont.variable
       )}
       suppressHydrationWarning
     >

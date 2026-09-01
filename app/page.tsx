@@ -29,8 +29,8 @@ export default async function Home({
         <div>
           <CardTitle>
             <span
-              className="font-heading text-3xl font-semibold tracking-tight
-                text-accent"
+              className="font-display text-5xl"
+              style={{ fontVariationSettings: '"MORF" 45, "SHLN" 30' }}
             >
               opor
             </span>
