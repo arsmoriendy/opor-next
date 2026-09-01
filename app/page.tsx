@@ -43,17 +43,27 @@ export default async function Home({
         <ThemeSwitcher />
       </CardHeader>
 
-      <CardContent className="flex-1">
-        <SearchForm port={port} protocols={protocols} />
-      </CardContent>
+      <CardContent className="flex-1 space-y-6 px-0">
+        <SearchForm port={port} protocols={protocols} className="px-4" />
 
-      {unassigned && <UnassignedPortAlert port={port} />}
-      {assigned && (
-        <>
-          <AssignedPortAlert port={port} {...searchResponse} />
-          <SearchResultTable services={searchResponse.services} />
-        </>
-      )}
+        {unassigned && (
+          <UnassignedPortAlert className="border-x-0 px-4" port={port} />
+        )}
+
+        {assigned && (
+          <>
+            <AssignedPortAlert
+              port={port}
+              {...searchResponse}
+              className="border-x-0 px-4"
+            />
+            <SearchResultTable
+              services={searchResponse.services}
+              className={"[&_td]:px-4 [&_th]:px-4"}
+            />
+          </>
+        )}
+      </CardContent>
 
       <Footer />
     </Card>

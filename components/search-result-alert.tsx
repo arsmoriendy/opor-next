@@ -15,14 +15,14 @@ import { forwardRef } from "react"
 
 export const SearchResultAlert = forwardRef<HTMLDivElement, AlertProps>(
   ({ className, ...props }, ref) => (
-    <Alert ref={ref} className={cn(className, "my-6 border-x-0")} {...props} />
+    <Alert ref={ref} className={cn(className)} {...props} />
   )
 )
 
 export const UnassignedPortAlert = forwardRef<
   HTMLDivElement,
   AlertProps & { port: number }
->(({ port, className, ...props }, ref) => (
+>(({ port, ...props }, ref) => (
   <SearchResultAlert {...props} ref={ref}>
     <SealCheckIcon className="h-4 w-4" />
     <AlertTitle>
@@ -42,14 +42,7 @@ export const AssignedPortAlert = forwardRef<
   AlertProps & Exclude<ServiceQuery, undefined> & { port: number }
 >(
   (
-    {
-      port,
-      services,
-      nextUnassignedPort,
-      prevUnassignedPort,
-      className,
-      ...props
-    },
+    { port, services, nextUnassignedPort, prevUnassignedPort, ...props },
     ref
   ) => (
     <SearchResultAlert variant={"destructive"} ref={ref} {...props}>
