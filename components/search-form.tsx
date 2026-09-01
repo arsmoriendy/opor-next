@@ -1,20 +1,20 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import Form from "next/form"
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { queryServices } from "@/lib/query-services"
 import { REGEXP_ONLY_DIGITS } from "input-otp"
 import { forwardRef, HTMLAttributes, useEffect, useRef, useState } from "react"
 
 export const SearchForm = forwardRef<
   HTMLFormElement,
-  HTMLAttributes<HTMLFormElement>
->(({ ...props }, ref) => {
-  const [portStr, setPortStr] = useState("")
+  HTMLAttributes<HTMLFormElement> & { port?: number; protocols?: string[] }
+>(({ port, protocols, ...props }, ref) => {
+  const [portStr, setPortStr] = useState(port?.toString() ?? "")
 
   const input = useRef<HTMLInputElement>(null)
 
@@ -23,18 +23,7 @@ export const SearchForm = forwardRef<
   }, [])
 
   return (
-    <form
-      ref={ref}
-      onSubmit={async (e) => {
-        e.preventDefault()
-
-        const portNumber = parseInt(portStr)
-
-        const port = await queryServices(portNumber)
-        console.log(port)
-      }}
-      {...props}
-    >
+    <Form action="/" ref={ref} {...props}>
       <InputOTP
         ref={input}
         name="port"
@@ -69,6 +58,6 @@ export const SearchForm = forwardRef<
       >
         Search
       </Button>
-    </form>
+    </Form>
   )
 })

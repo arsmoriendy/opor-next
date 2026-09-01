@@ -2,8 +2,17 @@ import { Footer } from "@/components/footer"
 import { SearchForm } from "@/components/search-form"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { queryServices } from "@/lib/query-services"
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ port?: number; protocols?: string[] }>
+}) {
+  const { port, protocols } = await searchParams
+
+  const searchResponse = port ? await queryServices(port, protocols) : undefined
+
   return (
     <Card
       className="min-h-screen w-screen border-0 pb-0 shadow-none lg:min-h-0
@@ -20,7 +29,7 @@ export default function Home() {
       </CardHeader>
 
       <CardContent className="flex-1">
-        <SearchForm />
+        <SearchForm port={port} protocols={protocols} />
       </CardContent>
 
       <Footer />
