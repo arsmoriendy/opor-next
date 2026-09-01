@@ -26,11 +26,11 @@ export const UnassignedPortAlert = forwardRef<
   <SearchResultAlert {...props} ref={ref}>
     <SealCheckIcon className="h-4 w-4" />
     <AlertTitle>
-      Port <b>{port}</b> is unregistered
+      Port <b>{port}</b> is unassigned
     </AlertTitle>
     <AlertDescription>
-      If you want to register this port, check out{" "}
-      <a href="https://www.iana.org/protocols/apply">
+      You may register to assign this port at{" "}
+      <a href="https://www.iana.org/form/ports-services">
         IANA's port registration forms
       </a>
     </AlertDescription>
@@ -62,15 +62,18 @@ export const AssignedPortAlert = forwardRef<
         {(nextUnassignedPort || prevUnassignedPort) && (
           <>
             <Separator className="my-1.5 bg-destructive/20" />
-            Suggested open ports:
+            Suggested unassigned ports:
             {nextUnassignedPort && (
-              <InlineCode copy tooltip="Next open port, click to copy">
+              <InlineCode copy tooltip="Next unassigned port, click to copy">
                 {nextUnassignedPort.port}
               </InlineCode>
             )}
             &nbsp;
             {prevUnassignedPort && (
-              <InlineCode copy tooltip="Previous open port, click to copy">
+              <InlineCode
+                copy
+                tooltip="Previous unnasigned port, click to copy"
+              >
                 {prevUnassignedPort.port}
               </InlineCode>
             )}
