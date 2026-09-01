@@ -61,7 +61,7 @@ export const AssignedPortAlert = forwardRef<
         <p>Registration details listed in the table below.</p>
         {(nextUnassignedPort || prevUnassignedPort) && (
           <>
-            <Separator className="my-1.5 bg-destructive/20 dark:bg-primary/20" />
+            <Separator className="my-1.5 bg-destructive/20" />
             Suggested open ports:
             {nextUnassignedPort && (
               <InlineCode copy tooltip="Next open port, click to copy">
