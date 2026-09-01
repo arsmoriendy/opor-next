@@ -55,7 +55,7 @@ export const AssignedPortAlert = forwardRef<
     <SearchResultAlert variant={"destructive"} ref={ref} {...props}>
       <SealWarningIcon className="h-4 w-4" />
       <AlertTitle>
-        Port <b>{port}</b> is registered
+        Port <b>{port}</b> is assigned
       </AlertTitle>
       <AlertDescription>
         <p>Registration details listed in the table below.</p>
