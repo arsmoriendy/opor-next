@@ -21,10 +21,12 @@ export function SearchResultTable({
   return (
     <Table {...props}>
       <TableHeader>
-        <TableHead>Service name</TableHead>
-        <TableHead>Transport protocol</TableHead>
-        <TableHead>Ports</TableHead>
-        <TableHead>Description</TableHead>
+        <TableRow>
+          <TableHead>Service name</TableHead>
+          <TableHead>Transport protocol</TableHead>
+          <TableHead>Ports</TableHead>
+          <TableHead>Description</TableHead>
+        </TableRow>
       </TableHeader>
 
       <TableBody>
