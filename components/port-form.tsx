@@ -10,36 +10,16 @@ import { queryServices } from "@/lib/query-services"
 import { REGEXP_ONLY_DIGITS } from "input-otp"
 import { forwardRef, HTMLAttributes, useEffect, useRef, useState } from "react"
 
-function getURLport(): string | null {
-  const urlParams = new URLSearchParams(window.location.search)
-  const pstring = urlParams.get("port")
-
-  return pstring
-}
-
-function setURLport(port: string) {
-  const url = new URL(document.URL)
-  url.searchParams.set("port", port)
-  history.pushState("", "", url)
-}
-
 export const PortForm = forwardRef<
   HTMLFormElement,
   HTMLAttributes<HTMLFormElement>
 >(({ ...props }, ref) => {
   const [portStr, setPortStr] = useState("")
-  const [portNum, setPortNum] = useState<number | null>(null)
 
   const input = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     input.current?.focus()
-
-    const urlPort = getURLport()
-    if (urlPort !== null && !/[^0-9]/.test(urlPort)) {
-      setPortStr(urlPort)
-      setPortNum(parseInt(urlPort))
-    }
   }, [])
 
   return (
@@ -52,9 +32,6 @@ export const PortForm = forwardRef<
 
         const port = await queryServices(portNumber)
         console.log(port)
-
-        setPortNum(portNumber)
-        setURLport(portStr)
       }}
       {...props}
     >
