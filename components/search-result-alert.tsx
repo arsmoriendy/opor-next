@@ -15,7 +15,7 @@ import { forwardRef } from "react"
 
 export const SearchResultAlert = forwardRef<HTMLDivElement, AlertProps>(
   ({ className, ...props }, ref) => (
-    <Alert ref={ref} className={cn(className, "my-6")} {...props} />
+    <Alert ref={ref} className={cn(className, "my-6 border-x-0")} {...props} />
   )
 )
 
