@@ -4,6 +4,7 @@ import {
   AssignedPortAlert,
   UnassignedPortAlert,
 } from "@/components/search-result-alert"
+import { SearchResultTable } from "@/components/searh-result-table"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { queryServices } from "@/lib/query-services"
@@ -39,7 +40,12 @@ export default async function Home({
       </CardContent>
 
       {unassigned && <UnassignedPortAlert port={port} />}
-      {assigned && <AssignedPortAlert port={port} {...searchResponse} />}
+      {assigned && (
+        <>
+          <AssignedPortAlert port={port} {...searchResponse} />
+          <SearchResultTable services={searchResponse.services} />
+        </>
+      )}
 
       <Footer />
     </Card>

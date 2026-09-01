@@ -39,7 +39,7 @@ export const UnassignedPortAlert = forwardRef<
 
 export const AssignedPortAlert = forwardRef<
   HTMLDivElement,
-  AlertProps & ServiceQuery & { port: number }
+  AlertProps & Exclude<ServiceQuery, undefined> & { port: number }
 >(
   (
     {
