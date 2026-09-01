@@ -6,26 +6,14 @@ export async function queryServices(
   portNumber: number,
   protocols: string[] | undefined
 ) {
-  const services = (
-    await db.query.portsTable.findMany({
-      where: {
-        port: portNumber,
-        service: {
-          transportProtocol: { in: protocols },
-        },
-      },
-      with: {
-        service: {
-          with: {
-            ports: { columns: { port: true }, orderBy: { port: "asc" } },
-          },
-        },
-      },
-      columns: { serviceId: false, port: false, id: false },
-    })
-  )
-    .map((row) => row.service)
-    .filter((service) => service?.description !== "Unassigned")
+  const services = await db.query.servicesTable.findMany({
+    where: {
+      ports: { port: portNumber },
+      description: { NOT: "Unassigned" },
+      transportProtocol: { in: protocols },
+    },
+    with: { ports: { columns: { port: true }, orderBy: { port: "asc" } } },
+  })
 
   if (services.length !== 0) {
     const nextUnassignedPort = await findAdjacentUnassignedPort({
@@ -35,7 +23,14 @@ export async function queryServices(
       lt: portNumber,
     })
 
-    return { services, nextUnassignedPort, prevUnassignedPort }
+    return {
+      services: services.map((serviceRow) => ({
+        ...serviceRow,
+        ports: serviceRow.ports.map((portRow) => portRow.port),
+      })),
+      nextUnassignedPort,
+      prevUnassignedPort,
+    }
   }
 
   return
