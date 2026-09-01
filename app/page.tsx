@@ -1,5 +1,5 @@
 import { Footer } from "@/components/footer"
-import { PortForm } from "@/components/port-form"
+import { SearchForm } from "@/components/search-form"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
@@ -20,7 +20,7 @@ export default function Home() {
       </CardHeader>
 
       <CardContent className="flex-1">
-        <PortForm />
+        <SearchForm />
       </CardContent>
 
       <Footer />

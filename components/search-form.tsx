@@ -10,7 +10,7 @@ import { queryServices } from "@/lib/query-services"
 import { REGEXP_ONLY_DIGITS } from "input-otp"
 import { forwardRef, HTMLAttributes, useEffect, useRef, useState } from "react"
 
-export const PortForm = forwardRef<
+export const SearchForm = forwardRef<
   HTMLFormElement,
   HTMLAttributes<HTMLFormElement>
 >(({ ...props }, ref) => {
