@@ -1,5 +1,9 @@
 import { Footer } from "@/components/footer"
 import { SearchForm } from "@/components/search-form"
+import {
+  AssignedPortAlert,
+  UnassignedPortAlert,
+} from "@/components/search-result-alert"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { queryServices } from "@/lib/query-services"
@@ -12,6 +16,8 @@ export default async function Home({
   const { port, protocols } = await searchParams
 
   const searchResponse = port ? await queryServices(port, protocols) : undefined
+  const unassigned = port && !searchResponse
+  const assigned = port && searchResponse
 
   return (
     <Card
@@ -31,6 +37,9 @@ export default async function Home({
       <CardContent className="flex-1">
         <SearchForm port={port} protocols={protocols} />
       </CardContent>
+
+      {unassigned && <UnassignedPortAlert port={port} />}
+      {assigned && <AssignedPortAlert port={port} {...searchResponse} />}
 
       <Footer />
     </Card>

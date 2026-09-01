@@ -32,6 +32,8 @@ export async function queryServices(portNumber: number, protocols?: string[]) {
   return
 }
 
+export type ServiceQuery = Awaited<ReturnType<typeof queryServices>>
+
 async function findAdjacentUnassignedPort({
   gt,
   lt,
