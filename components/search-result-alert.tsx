@@ -62,13 +62,13 @@ export const AssignedPortAlert = forwardRef<
         {(nextUnassignedPort || prevUnassignedPort) && (
           <>
             <Separator className="my-1.5 bg-destructive/20" />
-            Suggested unassigned ports:
+            Adjacent unassigned ports:{" "}
             {nextUnassignedPort && (
               <InlineCode copy tooltip="Next unassigned port, click to copy">
                 {nextUnassignedPort.port}
               </InlineCode>
             )}
-            &nbsp;
+            ,{" "}
             {prevUnassignedPort && (
               <InlineCode
                 copy
