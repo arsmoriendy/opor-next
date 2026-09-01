@@ -24,10 +24,7 @@ export async function queryServices(
     })
 
     return {
-      services: services.map((serviceRow) => ({
-        ...serviceRow,
-        ports: serviceRow.ports.map((portRow) => portRow.port),
-      })),
+      services,
       nextUnassignedPort,
       prevUnassignedPort,
     }
@@ -45,17 +42,18 @@ async function findAdjacentUnassignedPort({
   lt: number
   protocols: string[]
 }>) {
-  return (
-    await db.query.portsTable.findFirst({
-      where: {
-        port: { gt, lt },
-        service: {
-          description: "Unassigned",
-          transportProtocol: { in: protocols },
-        },
+  return await db.query.portsTable.findFirst({
+    where: {
+      port: { gt, lt },
+      service: {
+        description: "Unassigned",
+        transportProtocol: { in: protocols },
       },
-      columns: { port: true },
-      orderBy: { port: gt ? "asc" : "desc" },
-    })
-  )?.port
+    },
+    with: {
+      service: { columns: { transportProtocol: true } },
+    },
+    columns: { id: false },
+    orderBy: { port: gt ? "asc" : "desc" },
+  })
 }
