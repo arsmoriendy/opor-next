@@ -28,17 +28,19 @@ export default async function Home({
       <CardHeader className="flex flex-row justify-between">
         <div>
           <CardTitle className="-mt-3">
-            <span
-              className="font-display text-5xl"
-              style={{ fontVariationSettings: '"MORF" 45, "SHLN" 30' }}
-            >
-              opor
-            </span>
-            <span className="font-mono text-muted-foreground">(.top)</span>
+            <h1>
+              <span
+                className="font-display text-5xl"
+                style={{ fontVariationSettings: '"MORF" 45, "SHLN" 30' }}
+              >
+                opor
+              </span>
+              <span className="font-mono text-muted-foreground">(.top)</span>
+            </h1>
           </CardTitle>
-          <p className="-mt-1 font-heading text-base text-muted-foreground">
+          <h2 className="-mt-1 font-heading text-base text-muted-foreground">
             Lookup unassigned (<i>open</i>) ports
-          </p>
+          </h2>
         </div>
         <ThemeSwitcher />
       </CardHeader>
