@@ -1,6 +1,5 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import Form from "next/form"
 import {
   InputOTP,
@@ -9,6 +8,7 @@ import {
 } from "@/components/ui/input-otp"
 import { REGEXP_ONLY_DIGITS } from "input-otp"
 import { forwardRef, HTMLAttributes, useEffect, useRef, useState } from "react"
+import SearchButton from "@/components/search-button"
 
 export const SearchForm = forwardRef<
   HTMLFormElement,
@@ -50,14 +50,7 @@ export const SearchForm = forwardRef<
           </InputOTPGroup>
         </div>
       </InputOTP>
-      <Button
-        className="mt-3"
-        type="submit"
-        size="sm"
-        disabled={portStr.length === 0}
-      >
-        Search
-      </Button>
+      <SearchButton portStr={portStr} />
     </Form>
   )
 })
