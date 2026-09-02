@@ -33,6 +33,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       )}
       suppressHydrationWarning
     >
+      <head>
+        <link
+          rel="search"
+          type="application/opensearchdescription+xml"
+          title="Search unassigned ports"
+          href="/opensearch.xml"
+        />
+      </head>
       <body className="flex flex-col items-center justify-between lg:pt-6">
         <ThemeProvider attribute="class">{children}</ThemeProvider>
       </body>
