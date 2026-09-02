@@ -29,13 +29,19 @@ export default async function Home({
         <div>
           <CardTitle className="-mt-3">
             <h1>
-              <span
-                className="font-display text-5xl"
-                style={{ fontVariationSettings: '"MORF" 45, "SHLN" 30' }}
+              <a
+                href="/"
+                className="text-muted-foreground hover:text-accent
+                  hover:no-underline"
               >
-                opor
-              </span>
-              <span className="font-mono text-muted-foreground">(.top)</span>
+                <span
+                  className="font-display text-5xl"
+                  style={{ fontVariationSettings: '"MORF" 45, "SHLN" 30' }}
+                >
+                  opor
+                </span>
+                <span className="font-mono">(.top)</span>
+              </a>
             </h1>
           </CardTitle>
           <h2 className="-mt-1 font-heading text-base text-muted-foreground">
