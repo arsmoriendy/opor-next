@@ -59,3 +59,7 @@ export const portsTable = snakeCase.table(
     index().on(table.serviceId), // to optimize relational queries
   ]
 )
+
+export const metadataTable = snakeCase.table("metadata", {
+  lastRefresh: timestamp({ withTimezone: true }).defaultNow(),
+})
