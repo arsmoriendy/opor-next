@@ -66,10 +66,14 @@ export default async function Home({
               {...searchResponse}
               className="border-x-0 px-4"
             />
-            <SearchResultTable
-              services={searchResponse.services!}
-              className={"[&_td]:px-4 [&_th]:px-4"}
-            />
+
+            <div className="border-y">
+              <h3 className="m-4 font-bold">Assigned service details</h3>
+              <SearchResultTable
+                services={searchResponse.services!}
+                className="[&_td]:px-4 [&_th]:px-4"
+              />
+            </div>
           </>
         )}
       </CardContent>
