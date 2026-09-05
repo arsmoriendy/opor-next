@@ -3,6 +3,8 @@
 import { db } from "@/lib/db"
 
 export async function queryServices(portNumber: number, protocols?: string[]) {
+  const { lastRefresh } = (await db.query.metadataTable.findFirst())!
+
   const services = await db.query.servicesTable.findMany({
     where: {
       ports: { port: portNumber },
@@ -26,10 +28,12 @@ export async function queryServices(portNumber: number, protocols?: string[]) {
       services,
       nextUnassignedPort,
       prevUnassignedPort,
+      lastRefresh,
+      assigned: true,
     }
   }
 
-  return
+  return { lastRefresh, assigned: false }
 }
 
 export type ServiceQuery = Awaited<ReturnType<typeof queryServices>>

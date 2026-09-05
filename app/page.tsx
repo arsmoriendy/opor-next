@@ -15,10 +15,7 @@ export default async function Home({
   searchParams: Promise<{ port?: number; protocols?: string[] }>
 }) {
   const { port, protocols } = await searchParams
-
   const searchResponse = port ? await queryServices(port, protocols) : undefined
-  const unassigned = port && !searchResponse
-  const assigned = port && searchResponse
 
   return (
     <Card
@@ -54,11 +51,15 @@ export default async function Home({
       <CardContent className="flex-1 space-y-6 px-0">
         <SearchForm port={port} protocols={protocols} className="px-4" />
 
-        {unassigned && (
-          <UnassignedPortAlert className="border-x-0 px-4" port={port} />
+        {port && !searchResponse?.assigned && (
+          <UnassignedPortAlert
+            className="border-x-0 px-4"
+            port={port}
+            lastRefresh={searchResponse!.lastRefresh!}
+          />
         )}
 
-        {assigned && (
+        {port && searchResponse?.assigned && (
           <>
             <AssignedPortAlert
               port={port}
@@ -66,7 +67,7 @@ export default async function Home({
               className="border-x-0 px-4"
             />
             <SearchResultTable
-              services={searchResponse.services}
+              services={searchResponse.services!}
               className={"[&_td]:px-4 [&_th]:px-4"}
             />
           </>

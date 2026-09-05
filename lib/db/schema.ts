@@ -61,5 +61,5 @@ export const portsTable = snakeCase.table(
 )
 
 export const metadataTable = snakeCase.table("metadata", {
-  lastRefresh: timestamp({ withTimezone: true }).defaultNow(),
+  lastRefresh: timestamp({ withTimezone: true }).defaultNow().notNull(),
 })

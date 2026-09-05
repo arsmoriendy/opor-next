@@ -1,8 +1,13 @@
 import { defineRelations } from "drizzle-orm"
-import { portsTable, servicesTable, protocosTable } from "@/lib/db/schema"
+import {
+  portsTable,
+  servicesTable,
+  protocosTable,
+  metadataTable,
+} from "@/lib/db/schema"
 
 export const relations = defineRelations(
-  { portsTable, servicesTable, protocosTable },
+  { portsTable, servicesTable, protocosTable, metadataTable },
   (r) => ({
     portsTable: {
       service: r.one.servicesTable({

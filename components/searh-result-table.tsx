@@ -9,7 +9,6 @@ import {
   TableCell,
   TableRow,
 } from "@/components/ui/table"
-import { getUuid7Timestamp } from "@/lib/get-uuid7-timestamp"
 import { ServiceQuery } from "@/lib/query-services"
 import { ComponentProps } from "react"
 
@@ -17,7 +16,7 @@ export function SearchResultTable({
   services,
   ...props
 }: ComponentProps<"table"> & {
-  services: Exclude<ServiceQuery, undefined>["services"]
+  services: NonNullable<NonNullable<ServiceQuery>["services"]>
 }) {
   return (
     <Table {...props}>
@@ -27,7 +26,6 @@ export function SearchResultTable({
           <TableHead>Transport protocol</TableHead>
           <TableHead>Ports</TableHead>
           <TableHead>Description</TableHead>
-          <TableHead>Last checked</TableHead>
         </TableRow>
       </TableHeader>
 
@@ -44,7 +42,6 @@ export function SearchResultTable({
               )) ?? "-"}
             </TableCell>
             <TableCell>{service.description ?? "-"}</TableCell>
-            <TableCell>{getUuid7Timestamp(service.id).toISOString()}</TableCell>
           </TableRow>
         ))}
       </TableBody>

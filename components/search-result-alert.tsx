@@ -21,8 +21,8 @@ export const SearchResultAlert = forwardRef<HTMLDivElement, AlertProps>(
 
 export const UnassignedPortAlert = forwardRef<
   HTMLDivElement,
-  AlertProps & { port: number }
->(({ port, ...props }, ref) => (
+  AlertProps & { port: number; lastRefresh: Date }
+>(({ port, lastRefresh, ...props }, ref) => (
   <SearchResultAlert {...props} ref={ref}>
     <SealCheckIcon className="h-4 w-4" />
     <AlertTitle>
@@ -33,6 +33,8 @@ export const UnassignedPortAlert = forwardRef<
       <a href="https://www.iana.org/form/ports-services">
         IANA's port registration forms
       </a>
+      <Separator className="my-1" />
+      Last refreshed: {lastRefresh.toISOString()}
     </AlertDescription>
   </SearchResultAlert>
 ))
@@ -42,7 +44,14 @@ export const AssignedPortAlert = forwardRef<
   AlertProps & Exclude<ServiceQuery, undefined> & { port: number }
 >(
   (
-    { port, services, nextUnassignedPort, prevUnassignedPort, ...props },
+    {
+      port,
+      services,
+      nextUnassignedPort,
+      prevUnassignedPort,
+      lastRefresh,
+      ...props
+    },
     ref
   ) => (
     <SearchResultAlert variant={"destructive"} ref={ref} {...props}>
@@ -51,27 +60,23 @@ export const AssignedPortAlert = forwardRef<
         Port <b>{port}</b> is assigned
       </AlertTitle>
       <AlertDescription>
-        <p>Registration details listed in the table below.</p>
-        {(nextUnassignedPort || prevUnassignedPort) && (
+        Adjacent unassigned ports:{" "}
+        {prevUnassignedPort && (
           <>
-            <Separator className="my-1.5 bg-destructive/20" />
-            Adjacent unassigned ports:{" "}
-            {prevUnassignedPort && (
-              <InlineCode
-                copy
-                tooltip="Previous unnasigned port, click to copy"
-              >
-                {prevUnassignedPort.port}
-              </InlineCode>
-            )}
+            <InlineCode copy tooltip="Previous unnasigned port, click to copy">
+              {prevUnassignedPort.port}
+            </InlineCode>
             ,{" "}
-            {nextUnassignedPort && (
-              <InlineCode copy tooltip="Next unassigned port, click to copy">
-                {nextUnassignedPort.port}
-              </InlineCode>
-            )}
           </>
         )}
+        {nextUnassignedPort && (
+          <InlineCode copy tooltip="Next unassigned port, click to copy">
+            {nextUnassignedPort.port}
+          </InlineCode>
+        )}
+        .
+        <Separator className="my-1.5 bg-destructive/20" />
+        Last refreshed: {lastRefresh.toISOString()}
       </AlertDescription>
     </SearchResultAlert>
   )
