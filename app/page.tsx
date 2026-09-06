@@ -48,7 +48,10 @@ export default async function Home({
         <ThemeSwitcher />
       </CardHeader>
 
-      <CardContent className="flex-1 space-y-6 px-0">
+      <main // custom <main/> CardContent
+        data-slot="card-content"
+        className="flex-1 space-y-6 px-(--card-spacing) px-0"
+      >
         <SearchForm port={port} protocols={protocols} className="px-4" />
 
         {port && !searchResponse?.assigned && (
@@ -76,7 +79,7 @@ export default async function Home({
             </div>
           </>
         )}
-      </CardContent>
+      </main>
 
       <Footer />
     </Card>
