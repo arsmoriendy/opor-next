@@ -7,13 +7,26 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp"
 import { REGEXP_ONLY_DIGITS } from "input-otp"
-import { forwardRef, HTMLAttributes, useEffect, useRef, useState } from "react"
+import {
+  ComponentProps,
+  forwardRef,
+  HTMLAttributes,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import SearchButton from "@/components/search-button"
+import { ProtocolCombobox } from "@/components/protocol-combobox"
 
 export const SearchForm = forwardRef<
   HTMLFormElement,
-  HTMLAttributes<HTMLFormElement> & { port?: number; protocols?: string[] }
->(({ port, protocols, className, ...props }, ref) => {
+  HTMLAttributes<HTMLFormElement> & {
+    port?: number
+    protocols?: string[]
+    allProtocols: string[]
+  }
+>(({ port, protocols, className, allProtocols, ...props }, ref) => {
   const [portStr, setPortStr] = useState(port?.toString() ?? "")
 
   const input = useRef<HTMLInputElement>(null)
@@ -24,14 +37,11 @@ export const SearchForm = forwardRef<
 
   return (
     <Form action="/" ref={ref} className={className} {...props}>
-      <div className="flex gap-4">
-        <div>
-          <label htmlFor="port">Port Number</label>
-          <label className="block text-xs text-muted-foreground" htmlFor="port">
-            Press enter to search
-          </label>
-        </div>
-
+      <div className="grid w-max grid-cols-[auto_auto] place-items-start gap-4">
+        {/* port field */}
+        <FormLabel description={<>Port number to search</>} htmlFor="port">
+          Port Number
+        </FormLabel>
         <InputOTP
           ref={input}
           id="port"
@@ -48,9 +58,37 @@ export const SearchForm = forwardRef<
             ))}
           </InputOTPGroup>
         </InputOTP>
+
+        {/* protocol field */}
+        <FormLabel htmlFor="protocol" description={<>Protocols to filter</>}>
+          Protocols (<i>Optional</i>)
+        </FormLabel>
+        <ProtocolCombobox protocols={protocols} allProtocols={allProtocols} />
       </div>
 
       <SearchButton portStr={portStr} />
     </Form>
   )
 })
+
+function FormLabel({
+  htmlFor,
+  description,
+  children,
+  ...divProps
+}: Pick<ComponentProps<"label">, "htmlFor"> &
+  ComponentProps<"div"> & { description?: ReactNode }) {
+  return (
+    <div {...divProps}>
+      <label htmlFor={htmlFor}>{children}</label>
+      {description && (
+        <label
+          className="block text-xs text-muted-foreground"
+          htmlFor={htmlFor}
+        >
+          {description}
+        </label>
+      )}
+    </div>
+  )
+}

@@ -6,16 +6,19 @@ import {
 } from "@/components/search-result-alert"
 import { SearchResultTable } from "@/components/searh-result-table"
 import { ThemeSwitcher } from "@/components/theme-switcher"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+import { listProtocols } from "@/lib/query-protocols"
 import { queryServices } from "@/lib/query-services"
 
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ port?: number; protocols?: string[] }>
+  searchParams: Promise<{ port?: number; protocol?: string | string[] }>
 }) {
-  const { port, protocols } = await searchParams
+  const { port, protocol } = await searchParams
+  const protocols = protocol ? [protocol].flat() : undefined
   const searchResponse = port ? await queryServices(port, protocols) : undefined
+  const allProtocols = await listProtocols()
 
   return (
     <Card
@@ -52,7 +55,12 @@ export default async function Home({
         data-slot="card-content"
         className="flex-1 space-y-6 px-(--card-spacing) px-0"
       >
-        <SearchForm port={port} protocols={protocols} className="px-4" />
+        <SearchForm
+          port={port}
+          protocols={protocols}
+          allProtocols={allProtocols}
+          className="px-4"
+        />
 
         {port && !searchResponse?.assigned && (
           <UnassignedPortAlert
