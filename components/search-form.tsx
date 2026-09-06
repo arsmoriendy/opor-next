@@ -13,7 +13,7 @@ import SearchButton from "@/components/search-button"
 export const SearchForm = forwardRef<
   HTMLFormElement,
   HTMLAttributes<HTMLFormElement> & { port?: number; protocols?: string[] }
->(({ port, protocols, ...props }, ref) => {
+>(({ port, protocols, className, ...props }, ref) => {
   const [portStr, setPortStr] = useState(port?.toString() ?? "")
 
   const input = useRef<HTMLInputElement>(null)
@@ -23,33 +23,33 @@ export const SearchForm = forwardRef<
   }, [])
 
   return (
-    <Form action="/" ref={ref} {...props}>
-      <InputOTP
-        ref={input}
-        name="port"
-        type="search"
-        pattern={REGEXP_ONLY_DIGITS}
-        value={portStr}
-        maxLength={10}
-        onChange={(value) => setPortStr(value)}
-      >
-        <div className="flex items-center gap-6">
-          <div>
-            <label htmlFor="port">Port Number</label>
-            <label
-              className="block text-xs text-muted-foreground"
-              htmlFor="port"
-            >
-              Press enter to search
-            </label>
-          </div>
+    <Form action="/" ref={ref} className={className} {...props}>
+      <div className="flex gap-4">
+        <div>
+          <label htmlFor="port">Port Number</label>
+          <label className="block text-xs text-muted-foreground" htmlFor="port">
+            Press enter to search
+          </label>
+        </div>
+
+        <InputOTP
+          ref={input}
+          id="port"
+          name="port"
+          type="search"
+          pattern={REGEXP_ONLY_DIGITS}
+          value={portStr}
+          maxLength={10}
+          onChange={(value) => setPortStr(value)}
+        >
           <InputOTPGroup>
             {[...portStr, ""].map((_, i) => (
               <InputOTPSlot key={i} index={i} />
             ))}
           </InputOTPGroup>
-        </div>
-      </InputOTP>
+        </InputOTP>
+      </div>
+
       <SearchButton portStr={portStr} />
     </Form>
   )
