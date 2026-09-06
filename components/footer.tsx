@@ -12,7 +12,7 @@ import {
   CoffeeIcon,
   GithubLogoIcon,
 } from "@phosphor-icons/react/dist/ssr"
-import { forwardRef, HTMLAttributes, ReactNode } from "react"
+import { ComponentProps, forwardRef, HTMLAttributes } from "react"
 
 type FooterProps = HTMLAttributes<HTMLDivElement>
 
@@ -26,21 +26,21 @@ export const Footer = forwardRef<HTMLDivElement, FooterProps>(
       >
         <div className="w-full p-6 lg:w-[768px]">
           <div id="socialbar" className="flex space-x-1.5">
-            <SocialBtn link="#" tooltip="Back to top">
+            <SocialLinkButton href="#" tooltip="Back to top">
               <ArrowUpIcon />
-            </SocialBtn>
-            <SocialBtn
-              link="https://github.com/arsmoriendy/opor-next"
+            </SocialLinkButton>
+            <SocialLinkButton
+              href="https://github.com/arsmoriendy/opor-next"
               tooltip="Star on Github"
             >
               <GithubLogoIcon />
-            </SocialBtn>
-            <SocialBtn
-              link="https://ko-fi.com/arsmoriendy"
+            </SocialLinkButton>
+            <SocialLinkButton
+              href="https://ko-fi.com/arsmoriendy"
               tooltip="Buy me a coffee"
             >
               <CoffeeIcon />
-            </SocialBtn>
+            </SocialLinkButton>
           </div>
 
           <Separator className="my-3" />
@@ -56,28 +56,26 @@ export const Footer = forwardRef<HTMLDivElement, FooterProps>(
   }
 )
 
-const SocialBtn = ({
-  link,
+const SocialLinkButton = ({
   tooltip,
-  children,
+  className,
+  ...aProps
 }: {
-  link: string
   tooltip: string
-  children: ReactNode
-}) => (
+} & ComponentProps<"a">) => (
   <TooltipProvider>
     <Tooltip>
       <TooltipTrigger
         render={
           <a
-            href={link}
             className={cn(
               "text-inherit",
-              buttonVariants({ variant: "outline", size: "icon" })
+              buttonVariants({ variant: "outline", size: "icon" }),
+              className
             )}
-          >
-            {children}
-          </a>
+            aria-label={tooltip}
+            {...aProps}
+          />
         }
       ></TooltipTrigger>
       <TooltipContent>
