@@ -62,17 +62,15 @@ export const AssignedPortAlert = forwardRef<
       <AlertDescription>
         Adjacent unassigned ports:{" "}
         {prevUnassignedPort && (
-          <>
-            <InlinePortCode
-              copy
-              tooltip="Previous unassigned port, click to copy"
-              protocol={prevUnassignedPort.service?.transportProtocol}
-            >
-              {prevUnassignedPort.port}
-            </InlinePortCode>
-            ,{" "}
-          </>
+          <InlinePortCode
+            copy
+            tooltip="Previous unassigned port, click to copy"
+            protocol={prevUnassignedPort.service?.transportProtocol}
+          >
+            {prevUnassignedPort.port}
+          </InlinePortCode>
         )}
+        {nextUnassignedPort && prevUnassignedPort && ", "}
         {nextUnassignedPort && (
           <InlinePortCode
             copy
