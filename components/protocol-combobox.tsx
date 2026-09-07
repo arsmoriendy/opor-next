@@ -35,21 +35,34 @@ export function ProtocolCombobox({
       name="protocol"
       id="protocol"
     >
-      <ComboboxChips ref={anchor}>
+      <ComboboxChips
+        ref={anchor}
+        className="gap-0 [&>div:not(:last-of-type)]:mr-1"
+      >
         <ComboboxValue>
           {(values) => (
             <React.Fragment>
               {values.map((value: string) => (
                 <ComboboxChip key={value}>{value}</ComboboxChip>
               ))}
-              <ComboboxChipsInput />
+
+              {protocols.length === 0 && (
+                <ComboboxChip
+                  className="bg-transparent text-muted-foreground"
+                  showRemove={false}
+                >
+                  No filters
+                </ComboboxChip>
+              )}
+
+              <ComboboxChipsInput className="field-sizing-content min-w-px" />
             </React.Fragment>
           )}
         </ComboboxValue>
       </ComboboxChips>
 
       <ComboboxContent anchor={anchor}>
-        <ComboboxEmpty>Protocol not found.</ComboboxEmpty>
+        <ComboboxEmpty>Not found</ComboboxEmpty>
         <ComboboxList>
           {(protocol) => (
             <ComboboxItem key={protocol} value={protocol}>
