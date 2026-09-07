@@ -60,27 +60,33 @@ export const AssignedPortAlert = forwardRef<
         Port <b>{port}</b> is assigned
       </AlertTitle>
       <AlertDescription>
-        Adjacent unassigned ports:{" "}
-        {prevUnassignedPort && (
-          <InlinePortCode
-            copy
-            tooltip="Previous unassigned port, click to copy"
-            protocol={prevUnassignedPort.service?.transportProtocol}
-          >
-            {prevUnassignedPort.port}
-          </InlinePortCode>
+        {nextUnassignedPort || prevUnassignedPort ? (
+          <>
+            Adjacent unassigned ports:{" "}
+            {prevUnassignedPort && (
+              <InlinePortCode
+                copy
+                tooltip="Previous unassigned port, click to copy"
+                protocol={prevUnassignedPort.service?.transportProtocol}
+              >
+                {prevUnassignedPort.port}
+              </InlinePortCode>
+            )}
+            {nextUnassignedPort && prevUnassignedPort && ", "}
+            {nextUnassignedPort && (
+              <InlinePortCode
+                copy
+                tooltip="Previous unassigned port, click to copy"
+                protocol={nextUnassignedPort.service?.transportProtocol}
+              >
+                {nextUnassignedPort.port}
+              </InlinePortCode>
+            )}
+            .
+          </>
+        ) : (
+          <>No adjacent unassigned ports.</>
         )}
-        {nextUnassignedPort && prevUnassignedPort && ", "}
-        {nextUnassignedPort && (
-          <InlinePortCode
-            copy
-            tooltip="Previous unassigned port, click to copy"
-            protocol={nextUnassignedPort.service?.transportProtocol}
-          >
-            {nextUnassignedPort.port}
-          </InlinePortCode>
-        )}
-        .
         <Separator className="my-1.5 bg-destructive/20" />
         Last refreshed: {lastRefresh.toISOString()}
       </AlertDescription>
