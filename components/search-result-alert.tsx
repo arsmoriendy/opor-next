@@ -1,6 +1,6 @@
 "use client"
 
-import { InlineCode } from "@/components/inline-code"
+import { InlineCode, InlineCodeProps } from "@/components/inline-code"
 import {
   Alert,
   AlertDescription,
@@ -63,16 +63,24 @@ export const AssignedPortAlert = forwardRef<
         Adjacent unassigned ports:{" "}
         {prevUnassignedPort && (
           <>
-            <InlineCode copy tooltip="Previous unnasigned port, click to copy">
+            <InlinePortCode
+              copy
+              tooltip="Previous unassigned port, click to copy"
+              protocol={prevUnassignedPort.service?.transportProtocol}
+            >
               {prevUnassignedPort.port}
-            </InlineCode>
+            </InlinePortCode>
             ,{" "}
           </>
         )}
         {nextUnassignedPort && (
-          <InlineCode copy tooltip="Next unassigned port, click to copy">
+          <InlinePortCode
+            copy
+            tooltip="Previous unassigned port, click to copy"
+            protocol={nextUnassignedPort.service?.transportProtocol}
+          >
             {nextUnassignedPort.port}
-          </InlineCode>
+          </InlinePortCode>
         )}
         .
         <Separator className="my-1.5 bg-destructive/20" />
@@ -81,3 +89,14 @@ export const AssignedPortAlert = forwardRef<
     </SearchResultAlert>
   )
 )
+
+export function InlinePortCode({
+  protocol,
+  ...props
+}: {
+  protocol?: string | null
+} & InlineCodeProps) {
+  return (
+    <InlineCode after={protocol ? ` (${protocol})` : undefined} {...props} />
+  )
+}

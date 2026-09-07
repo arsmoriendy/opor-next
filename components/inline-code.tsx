@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { forwardRef, HTMLAttributes } from "react"
+import { forwardRef, HTMLAttributes, ReactNode } from "react"
 import {
   Tooltip,
   TooltipContent,
@@ -7,40 +7,45 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-type InlineCodeProps = HTMLAttributes<HTMLElement> & {
+export type InlineCodeProps = HTMLAttributes<HTMLElement> & {
   // Toggle click to copy
   copy?: boolean
   tooltip?: string
+  before?: ReactNode
+  after?: ReactNode
 }
 export const InlineCode = forwardRef<HTMLElement, InlineCodeProps>(
-  ({ copy, className, tooltip, ...props }, ref) => {
-    const code = (
-      <code
+  ({ copy, className, tooltip, before, after, ...props }, ref) => {
+    const code = <code {...props} />
+
+    function handleClick() {
+      navigator.clipboard.writeText(props.children?.toString() ?? "")
+    }
+
+    return (
+      <span
         ref={ref}
-        onClick={
-          copy
-            ? () => {
-                navigator.clipboard.writeText(props.children?.toString() ?? "")
-              }
-            : undefined
-        }
         className={cn(
-          `relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono
-          font-semibold`,
+          "rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono",
           className
         )}
-        {...props}
-      />
-    )
-    return tooltip !== undefined ? (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger>{code}</TooltipTrigger>
-          <TooltipContent>{tooltip}</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    ) : (
-      code
+        onClick={copy ? handleClick : undefined}
+      >
+        {tooltip !== undefined ? (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                {before}
+                {code}
+                {after}
+              </TooltipTrigger>
+              <TooltipContent>{tooltip}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ) : (
+          code
+        )}
+      </span>
     )
   }
 )
