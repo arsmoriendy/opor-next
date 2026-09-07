@@ -47,11 +47,8 @@ export function ProtocolCombobox({
               ))}
 
               {protocols.length === 0 && (
-                <ComboboxChip
-                  className="bg-transparent text-muted-foreground"
-                  showRemove={false}
-                >
-                  No filters
+                <ComboboxChip className="text-muted-foreground">
+                  all
                 </ComboboxChip>
               )}
 
@@ -62,7 +59,7 @@ export function ProtocolCombobox({
       </ComboboxChips>
 
       <ComboboxContent anchor={anchor}>
-        <ComboboxEmpty>Not found</ComboboxEmpty>
+        <ComboboxEmpty>n/a</ComboboxEmpty>
         <ComboboxList>
           {(protocol) => (
             <ComboboxItem key={protocol} value={protocol}>
