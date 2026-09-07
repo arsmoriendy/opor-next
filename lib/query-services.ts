@@ -9,7 +9,9 @@ export async function queryServices(portNumber: number, protocols?: string[]) {
     where: {
       ports: { port: portNumber },
       description: { NOT: "Unassigned" },
-      transportProtocol: { in: protocols },
+      transportProtocol: {
+        OR: protocols ? [{ in: protocols }, { isNull: true }] : undefined,
+      },
     },
     with: { ports: { columns: { port: true }, orderBy: { port: "asc" } } },
   })
@@ -52,7 +54,9 @@ async function findAdjacentUnassignedPort({
       port: { gt, lt },
       service: {
         description: "Unassigned",
-        transportProtocol: { in: protocols },
+        transportProtocol: {
+          OR: protocols ? [{ in: protocols }, { isNull: true }] : undefined,
+        },
       },
     },
     with: {

@@ -33,7 +33,9 @@ export function SearchResultTable({
         {services.map((service, i) => (
           <TableRow key={i}>
             <TableCell>{service.serviceName ?? "-"}</TableCell>
-            <TableCell>{service.transportProtocol ?? "-"}</TableCell>
+            <TableCell>
+              {service.transportProtocol ?? "N/A (Possibly all protocols)"}
+            </TableCell>
             <TableCell className="flex flex-wrap gap-2">
               {service.ports?.map((port, i) => (
                 <InlineCode key={i} copy tooltip="Click to copy">
