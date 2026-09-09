@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator"
 import type { ServiceQuery } from "@/lib/query-services"
 import { cn } from "@/lib/utils"
 import { SealCheckIcon, SealWarningIcon } from "@phosphor-icons/react/dist/ssr"
-import { forwardRef } from "react"
+import { forwardRef, Fragment } from "react"
 
 export const SearchResultAlert = forwardRef<HTMLDivElement, AlertProps>(
   ({ className, ...props }, ref) => (
@@ -41,14 +41,14 @@ export const UnassignedPortAlert = forwardRef<
 
 export const AssignedPortAlert = forwardRef<
   HTMLDivElement,
-  AlertProps & NonNullable<ServiceQuery> & { port: number }
+  AlertProps & Extract<ServiceQuery, { services: {} }> & { port: number }
 >(
   (
     {
       port,
       services,
-      nextUnassignedPort,
-      prevUnassignedPort,
+      nextUnassignedServices,
+      prevUnassignedServices,
       lastRefresh,
       ...props
     },
@@ -60,27 +60,37 @@ export const AssignedPortAlert = forwardRef<
         Port <b>{port}</b> is assigned
       </AlertTitle>
       <AlertDescription>
-        {nextUnassignedPort || prevUnassignedPort ? (
+        {nextUnassignedServices.length !== 0 ||
+        prevUnassignedServices.length !== 0 ? (
           <>
             Adjacent unassigned ports:{" "}
-            {prevUnassignedPort && (
-              <InlinePortCode
-                copy
-                tooltip="Previous unassigned port, click to copy"
-                protocol={prevUnassignedPort.service?.transportProtocol}
-              >
-                {prevUnassignedPort.port}
-              </InlinePortCode>
-            )}
-            {nextUnassignedPort && prevUnassignedPort && ", "}
-            {nextUnassignedPort && (
-              <InlinePortCode
-                copy
-                tooltip="Next unassigned port, click to copy"
-                protocol={nextUnassignedPort.service?.transportProtocol}
-              >
-                {nextUnassignedPort.port}
-              </InlinePortCode>
+            {[
+              ...prevUnassignedServices.map(
+                ({ id, transportProtocol, port }) => (
+                  <InlinePortCode
+                    key={id}
+                    copy
+                    tooltip="Previous unassigned port, click to copy"
+                    protocol={transportProtocol}
+                  >
+                    {port}
+                  </InlinePortCode>
+                )
+              ),
+              ...nextUnassignedServices.map(
+                ({ id, transportProtocol, port }) => (
+                  <InlinePortCode
+                    key={id}
+                    copy
+                    tooltip="Next unassigned port, click to copy"
+                    protocol={transportProtocol}
+                  >
+                    {port}
+                  </InlinePortCode>
+                )
+              ),
+            ].map((node, i, arr) =>
+              i < arr.length - 1 ? <Fragment key={i}>{node}, </Fragment> : node
             )}
             .
           </>

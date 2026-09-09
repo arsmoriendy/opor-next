@@ -1,6 +1,19 @@
 "use server"
 
 import { db } from "@/lib/db"
+import { portsTable, servicesTable } from "@/lib/db/schema"
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  getColumns,
+  gt,
+  inArray,
+  isNull,
+  lt,
+  or,
+} from "drizzle-orm"
 
 export async function queryServices(portNumber: number, protocols?: string[]) {
   const { lastRefresh } = (await db.query.metadataTable.findFirst())!
@@ -17,19 +30,19 @@ export async function queryServices(portNumber: number, protocols?: string[]) {
   })
 
   if (services.length !== 0) {
-    const nextUnassignedPort = await findAdjacentUnassignedPort({
+    const nextUnassignedServices = await findAdjacentUnassignedServices({
       gt: portNumber,
       protocols,
     })
-    const prevUnassignedPort = await findAdjacentUnassignedPort({
+    const prevUnassignedServices = await findAdjacentUnassignedServices({
       lt: portNumber,
       protocols,
     })
 
     return {
       services,
-      nextUnassignedPort,
-      prevUnassignedPort,
+      nextUnassignedServices,
+      prevUnassignedServices,
       lastRefresh,
       assigned: true,
     }
@@ -40,29 +53,47 @@ export async function queryServices(portNumber: number, protocols?: string[]) {
 
 export type ServiceQuery = Awaited<ReturnType<typeof queryServices>>
 
-async function findAdjacentUnassignedPort({
-  gt,
-  lt,
+async function findAdjacentUnassignedServices({
+  gt: gtn,
+  lt: ltn,
   protocols,
 }: Partial<{
   gt: number
   lt: number
   protocols: string[]
 }>) {
-  return await db.query.portsTable.findFirst({
-    where: {
-      port: { gt, lt },
-      service: {
-        description: "Unassigned",
-        transportProtocol: {
-          OR: protocols ? [{ in: protocols }, { isNull: true }] : undefined,
-        },
-      },
-    },
-    with: {
-      service: { columns: { transportProtocol: true } },
-    },
-    columns: { id: false },
-    orderBy: { port: gt ? "asc" : "desc" },
-  })
+  const { ...columns } = {
+    ...getColumns(servicesTable),
+    port: portsTable.port,
+  }
+
+  const portQuery = db
+    .select({
+      port: portsTable.port,
+    })
+    .from(portsTable)
+    .orderBy(({ port }) => (gtn ? asc(port) : desc(port)))
+    .where(({ port }) =>
+      and(gtn ? gt(port, gtn) : ltn ? lt(port, ltn) : undefined)
+    )
+    .limit(1)
+
+  const services = await db
+    .select(columns)
+    .from(servicesTable)
+    .innerJoin(portsTable, eq(portsTable.serviceId, servicesTable.id))
+    .where(
+      and(
+        eq(portsTable.port, portQuery),
+        eq(servicesTable.description, "Unassigned"),
+        protocols
+          ? or(
+              inArray(servicesTable.transportProtocol, protocols),
+              isNull(servicesTable.transportProtocol)
+            )
+          : undefined
+      )
+    )
+
+  return services
 }
