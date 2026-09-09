@@ -67,14 +67,18 @@ async function findAdjacentUnassignedServices({
     port: portsTable.port,
   }
 
-  const portQuery = db
+  const adjacentPortQuery = db
     .select({
       port: portsTable.port,
     })
     .from(portsTable)
+    .innerJoin(servicesTable, eq(portsTable.serviceId, servicesTable.id))
     .orderBy(({ port }) => (gtn ? asc(port) : desc(port)))
     .where(({ port }) =>
-      and(gtn ? gt(port, gtn) : ltn ? lt(port, ltn) : undefined)
+      and(
+        gtn ? gt(port, gtn) : ltn ? lt(port, ltn) : undefined,
+        eq(servicesTable.description, "Unassigned")
+      )
     )
     .limit(1)
 
@@ -84,7 +88,7 @@ async function findAdjacentUnassignedServices({
     .innerJoin(portsTable, eq(portsTable.serviceId, servicesTable.id))
     .where(
       and(
-        eq(portsTable.port, portQuery),
+        eq(portsTable.port, adjacentPortQuery),
         eq(servicesTable.description, "Unassigned"),
         protocols
           ? or(
