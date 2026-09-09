@@ -62,7 +62,8 @@ async function findAdjacentUnassignedServices({
   lt: number
   protocols: string[]
 }>) {
-  const { ...columns } = {
+  // column filtering
+  const { id, port, transportProtocol } = {
     ...getColumns(servicesTable),
     port: portsTable.port,
   }
@@ -83,7 +84,7 @@ async function findAdjacentUnassignedServices({
     .limit(1)
 
   const services = await db
-    .select(columns)
+    .select({ id, port, transportProtocol })
     .from(servicesTable)
     .innerJoin(portsTable, eq(portsTable.serviceId, servicesTable.id))
     .where(
