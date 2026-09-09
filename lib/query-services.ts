@@ -30,19 +30,19 @@ export async function queryServices(portNumber: number, protocols?: string[]) {
   })
 
   if (services.length !== 0) {
-    const nextUnassignedServices = await findAdjacentUnassignedServices({
+    const nextUnassignedPort = await findUnassignedPort({
       gt: portNumber,
       protocols,
     })
-    const prevUnassignedServices = await findAdjacentUnassignedServices({
+    const prevUnassignedPort = await findUnassignedPort({
       lt: portNumber,
       protocols,
     })
 
     return {
       services,
-      nextUnassignedServices,
-      prevUnassignedServices,
+      nextUnassignedPort,
+      prevUnassignedPort,
       lastRefresh,
       assigned: true as const,
     }
@@ -53,7 +53,7 @@ export async function queryServices(portNumber: number, protocols?: string[]) {
 
 export type ServiceQuery = Awaited<ReturnType<typeof queryServices>>
 
-async function findAdjacentUnassignedServices({
+async function findUnassignedPort({
   gt: gtn,
   lt: ltn,
   protocols,
@@ -83,7 +83,7 @@ async function findAdjacentUnassignedServices({
     )
     .limit(1)
 
-  const services = await db
+  const serviceRows = await db
     .select({ id, port, transportProtocol })
     .from(servicesTable)
     .innerJoin(portsTable, eq(portsTable.serviceId, servicesTable.id))
@@ -100,5 +100,17 @@ async function findAdjacentUnassignedServices({
       )
     )
 
-  return services
+  const firstRow = serviceRows.at(0)
+  const rowProtocols = serviceRows.map((row) => row.transportProtocol)
+
+  const unassignedPort = firstRow
+    ? {
+        port: firstRow.port,
+        protocols: rowProtocols.includes(null)
+          ? null
+          : rowProtocols.filter((protocol) => protocol !== null),
+      }
+    : undefined
+
+  return unassignedPort
 }

@@ -47,8 +47,8 @@ export const AssignedPortAlert = forwardRef<
     {
       port,
       services,
-      nextUnassignedServices,
-      prevUnassignedServices,
+      nextUnassignedPort,
+      prevUnassignedPort,
       lastRefresh,
       ...props
     },
@@ -60,37 +60,27 @@ export const AssignedPortAlert = forwardRef<
         Port <b>{port}</b> is assigned
       </AlertTitle>
       <AlertDescription>
-        {nextUnassignedServices.length !== 0 ||
-        prevUnassignedServices.length !== 0 ? (
+        {nextUnassignedPort || prevUnassignedPort ? (
           <>
             Adjacent unassigned ports:{" "}
-            {[
-              ...prevUnassignedServices.map(
-                ({ id, transportProtocol, port }) => (
-                  <InlinePortCode
-                    key={id}
-                    copy
-                    tooltip="Previous unassigned port, click to copy"
-                    protocol={transportProtocol}
-                  >
-                    {port}
-                  </InlinePortCode>
-                )
-              ),
-              ...nextUnassignedServices.map(
-                ({ id, transportProtocol, port }) => (
-                  <InlinePortCode
-                    key={id}
-                    copy
-                    tooltip="Next unassigned port, click to copy"
-                    protocol={transportProtocol}
-                  >
-                    {port}
-                  </InlinePortCode>
-                )
-              ),
-            ].map((node, i, arr) =>
-              i < arr.length - 1 ? <Fragment key={i}>{node}, </Fragment> : node
+            {prevUnassignedPort && (
+              <InlinePortCode
+                copy
+                tooltip="Previous unassigned port, click to copy"
+                protocols={prevUnassignedPort.protocols}
+              >
+                {prevUnassignedPort.port}
+              </InlinePortCode>
+            )}
+            {nextUnassignedPort && prevUnassignedPort && ", "}
+            {nextUnassignedPort && (
+              <InlinePortCode
+                copy
+                tooltip="Next unassigned port, click to copy"
+                protocols={nextUnassignedPort.protocols}
+              >
+                {nextUnassignedPort.port}
+              </InlinePortCode>
             )}
             .
           </>
@@ -105,12 +95,15 @@ export const AssignedPortAlert = forwardRef<
 )
 
 export function InlinePortCode({
-  protocol,
+  protocols,
   ...props
 }: {
-  protocol?: string | null
+  protocols?: string[] | null
 } & InlineCodeProps) {
   return (
-    <InlineCode after={protocol ? ` (${protocol})` : undefined} {...props} />
+    <InlineCode
+      after={protocols ? ` (${protocols.join(" | ")})` : undefined}
+      {...props}
+    />
   )
 }
