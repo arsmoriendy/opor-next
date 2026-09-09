@@ -44,11 +44,11 @@ export async function queryServices(portNumber: number, protocols?: string[]) {
       nextUnassignedServices,
       prevUnassignedServices,
       lastRefresh,
-      assigned: true,
+      assigned: true as const,
     }
   }
 
-  return { lastRefresh, assigned: false }
+  return { lastRefresh, assigned: false as const }
 }
 
 export type ServiceQuery = Awaited<ReturnType<typeof queryServices>>
