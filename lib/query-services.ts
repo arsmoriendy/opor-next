@@ -8,10 +8,10 @@ import {
   desc,
   eq,
   getColumns,
-  gt,
+  gte,
+  lte,
   inArray,
   isNull,
-  lt,
   or,
 } from "drizzle-orm"
 
@@ -31,11 +31,11 @@ export async function queryServices(portNumber: number, protocols?: string[]) {
 
   if (services.length !== 0) {
     const nextUnassignedPort = await findUnassignedPort({
-      gt: portNumber,
+      gte: portNumber,
       protocols,
     })
     const prevUnassignedPort = await findUnassignedPort({
-      lt: portNumber,
+      lte: portNumber,
       protocols,
     })
 
@@ -54,12 +54,12 @@ export async function queryServices(portNumber: number, protocols?: string[]) {
 export type ServiceQuery = Awaited<ReturnType<typeof queryServices>>
 
 async function findUnassignedPort({
-  gt: gtn,
-  lt: ltn,
+  gte: gten,
+  lte: lten,
   protocols,
 }: Partial<{
-  gt: number
-  lt: number
+  gte: number
+  lte: number
   protocols: string[]
 }>) {
   // column filtering
@@ -74,10 +74,10 @@ async function findUnassignedPort({
     })
     .from(portsTable)
     .innerJoin(servicesTable, eq(portsTable.serviceId, servicesTable.id))
-    .orderBy(({ port }) => (gtn ? asc(port) : desc(port)))
+    .orderBy(({ port }) => (gten ? asc(port) : desc(port)))
     .where(({ port }) =>
       and(
-        gtn ? gt(port, gtn) : ltn ? lt(port, ltn) : undefined,
+        gten ? gte(port, gten) : lten ? lte(port, lten) : undefined,
         eq(servicesTable.description, "Unassigned")
       )
     )
