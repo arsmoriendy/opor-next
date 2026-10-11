@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     })
   }
 
-  await refreshDb({ databaseUrl: process.env.DATABASE_URl! })
+  await refreshDb({ databaseUrl: process.env.DATABASE_URL! })
 
   return Response.json({ success: true })
 }
