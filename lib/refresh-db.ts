@@ -13,7 +13,7 @@ import {
   portsTable,
   protocosTable,
   servicesTable,
-} from "@/lib/db/schema.js"
+} from "@/lib/db/schema"
 import { v7 } from "uuid"
 import type { PgAsyncTransaction, PgTable } from "drizzle-orm/pg-core"
 
